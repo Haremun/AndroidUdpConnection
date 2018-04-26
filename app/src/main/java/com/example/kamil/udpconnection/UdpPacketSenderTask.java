@@ -12,7 +12,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
 
 public class UdpPacketSenderTask extends AsyncTask<String, String, String> {
 
@@ -21,7 +20,7 @@ public class UdpPacketSenderTask extends AsyncTask<String, String, String> {
     private int mId;
     private WeakReference<Activity> activityWeakReference;
 
-    public UdpPacketSenderTask(Activity activity, String ipAddress, int port, int id) {
+    UdpPacketSenderTask(Activity activity, String ipAddress, int port, int id) {
         this.mIpAddress = ipAddress;
         this.mPort = port;
         this.mId = id;
@@ -34,21 +33,15 @@ public class UdpPacketSenderTask extends AsyncTask<String, String, String> {
         try {
 
             DatagramSocket clientSocket = new DatagramSocket();
-            InetAddress IPAddress = InetAddress.getByName("192.168.1.5");
+            InetAddress IPAddress = InetAddress.getByName(mIpAddress);
 
-            StringBuilder allMessages = new StringBuilder();
-            for (String message :
-                    strings) {
-                String temp = message + "\n";
-                allMessages.append(temp);
-            }
-            byte[] sendData = "Test".getBytes();
+            byte[] sendData = strings[0].getBytes(); //take first string from params and parse it to bytes
             byte[] receiveData = new byte[1024];
 
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, mPort);
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, mPort); //Set up packet to send and packet receive
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-            clientSocket.setSoTimeout(3000);
+            clientSocket.setSoTimeout(3000); //Set up ms time for waiting for response from server and send packet
             try {
                 clientSocket.send(sendPacket);
                 clientSocket.receive(receivePacket);
@@ -59,10 +52,8 @@ public class UdpPacketSenderTask extends AsyncTask<String, String, String> {
             }
 
 
-
-
             clientSocket.close();
-            Log.i("Udp", "No error!");
+            Log.i("Udp", "No sending error!");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +66,7 @@ public class UdpPacketSenderTask extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         Activity activity = activityWeakReference.get();
         if (activity != null) {
-            TextView textView = activity.findViewById(R.id.text_resp_1);
+            TextView textView = activity.findViewById(mId);
             textView.setText(s);
             textView.setTextColor(Color.GREEN);
         }

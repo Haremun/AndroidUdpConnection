@@ -3,7 +3,10 @@
     <string name="change">Change</string>
     <string name="_192_168_1_0">192.168.1.0</string>
     <string name="send">Send</string>
-    <string name="wpisz">Wpisz...</string>
+    <string name="wpisz">Wpisz…</string>
     <string name="server_response">Server response</string>
-    <string name="text">Text...</string>
+    <string name="text">Text…</string>
+    <string name="_8080">8080</string>
+    <string name="ip_address">Ip address:</string>
+    <string name="port">Port:</string>
 </resources>

@@ -19,10 +19,12 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.send_2)
     EditText editSend2;
 
-    @BindView(R.id.accept_address)
-    Button buttonChange;
     @BindView(R.id.edit_address)
     EditText editAddress;
+    @BindView(R.id.edit_port)
+    EditText editPort;
+
+
 
     private UdpHelper udpHelper;
 
@@ -45,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         if(udpHelper.isIpAddressSet()){
             switch (button.getId()){
                 case R.id.btn_send_1:
-                    udpHelper.SendPacket(editSend1.getText().toString());
+                    udpHelper.SendPacket(editSend1.getText().toString(), R.id.text_resp_1);
                     break;
                 case R.id.btn_send_2:
-                    udpHelper.SendPacket(editSend2.getText().toString());
+                    udpHelper.SendPacket(editSend2.getText().toString(), R.id.text_resp_2);
                     break;
             }
         }
@@ -56,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Set ip address!", Toast.LENGTH_SHORT).show();
 
     }
-    @OnClick(R.id.accept_address)
-    public void setAddress(){
-        udpHelper.setIpAddress(editAddress.getText().toString());
 
+    @OnClick(R.id.btn_change_ip_port)
+    public void changeIpAndPort(){
+        udpHelper.setIpAddress(editAddress.getText().toString());
+        udpHelper.setPort(Integer.valueOf(editPort.getText().toString()));
     }
 }
