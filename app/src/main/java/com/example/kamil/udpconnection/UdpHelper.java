@@ -1,14 +1,19 @@
 package com.example.kamil.udpconnection;
 
+import android.app.Activity;
+import android.content.Context;
+
 public class UdpHelper {
 
     private String mIpAddress;
     private int mPort;
+    private Activity mActivity;
 
-    public UdpHelper(String ipAddress, int port){
+    public UdpHelper(Activity activity, String ipAddress, int port){
 
         this.mIpAddress = ipAddress;
         this.mPort = port;
+        this.mActivity = activity;
     }
 
     public void setIpAddress(String mIpAddress) {
@@ -21,13 +26,7 @@ public class UdpHelper {
 
     public void SendPacket(String message){
 
-        try {
-            UdpPacketSender sender = new UdpPacketSender(mIpAddress, mPort);
-            sender.setMessage(message);
-            sender.start();
-            sender.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        UdpPacketSenderTask udpPacketSenderTask = new UdpPacketSenderTask(mActivity, mIpAddress, mPort, 0);
+        udpPacketSenderTask.execute(message);
     }
 }

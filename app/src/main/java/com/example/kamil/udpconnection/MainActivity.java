@@ -18,10 +18,6 @@ public class MainActivity extends AppCompatActivity {
     EditText editSend1;
     @BindView(R.id.send_2)
     EditText editSend2;
-    @BindView(R.id.send_3)
-    EditText editSend3;
-    @BindView(R.id.send_4)
-    EditText editSend4;
 
     @BindView(R.id.accept_address)
     Button buttonChange;
@@ -36,13 +32,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        udpHelper = new UdpHelper("192.168.1.6", 8080);
-        editAddress.setHint("192.168.1.6");
+        udpHelper = new UdpHelper(this, "192.168.1.5", 8080);
+        editAddress.setHint("192.168.1.5");
+
 
 
     }
 
-    @OnClick({R.id.btn_send_1, R.id.btn_send_2, R.id.btn_send_3, R.id.btn_send_4})
+    @OnClick({R.id.btn_send_1, R.id.btn_send_2})
     public void btnClick(Button button){
 
         if(udpHelper.isIpAddressSet()){
@@ -52,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_send_2:
                     udpHelper.SendPacket(editSend2.getText().toString());
-                    break;
-                case R.id.btn_send_3:
-                    udpHelper.SendPacket(editSend3.getText().toString());
-                    break;
-                case R.id.btn_send_4:
-                    udpHelper.SendPacket(editSend4.getText().toString());
                     break;
             }
         }
